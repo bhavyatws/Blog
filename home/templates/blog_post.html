@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Blog-Post{% endblock title %}
+{% block content %}
+<div class="container mt-3 mp-4">
+<div class="col-md-8">
+    <h3 class="pb-4 mb-4 fst-italic border-bottom">
+      Welcome
+    </h3>
+
+
+
+    <article class="blog-post">
+      <h2 class="blog-post-title">{{blog.title}}</h2>
+      <p class="blog-post-meta"><h5>{{blog.date_created}}, Author:{{blog.author}}</h5></p>
+
+      <p><h6>{{blog.description}}</h6></p>
+      <hr>
+     
+
+    
+  </div>
+</div>
+{% endblock content %}
