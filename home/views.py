@@ -1,5 +1,6 @@
 import email
 import imp
+from turtle import pos
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
@@ -8,8 +9,9 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.validators import validate_email
 from django.forms import ValidationError
-
+from .templatetags import extra_filter
 from .models import *
+import uuid
 # Create your views here.
 def home(request):
     blog=Blog.objects.all()
@@ -19,11 +21,39 @@ def home(request):
     # print(hello.thumbnail.url)
     context={'blog':blog}
     return render(request,'blog.html',context)
-def blogpost(request,id):
-    blog=Blog.objects.filter(post_id=id)[0]#it fetch first of Post having same id
-    print(blog)
-    context={'blog':blog}
+def blogpost(request,slug):
+    # blog=Blog.objects.filter(post_id=id)[0]#it fetch first of Post having same id
+    blog=Blog.objects.filter(slug=slug).first()
+    comment=BlogComment.objects.filter(blog=blog,parent=None)
+    replies=BlogComment.objects.filter(blog=blog).exclude(parent=None)
+    replyDict={}
+    for reply in replies:
+        if reply.parent.comment_id not in replyDict.keys():
+            replyDict[reply.parent.comment_id]=[reply]
+        else: 
+            replyDict[reply.parent.comment_id].append(reply)
+    # print(replyDict)
+    context={'blog':blog,'comment':comment,'replyDict':replyDict}
     return render(request,'blog_post.html',context)
+def CommentPost(request,slug):
+    if request.method=="POST":
+        comment=request.POST.get('comment')
+        user=request.user
+        post_id=request.POST.get("post_id")
+        blog=Blog.objects.get(post_id=post_id)
+        parentSno=request.POST.get("parentSno")
+        print(parentSno)
+        if parentSno=="":
+            comment=BlogComment(comment=comment,blog=blog,user=user)
+            comment.save()
+            messages.success(request,'Your comment has been posted successfully!')
+        else:
+            parent=BlogComment.objects.get(comment_id=parentSno)
+            reply=BlogComment(comment=comment,blog=blog,user=user,parent=parent)
+            reply.save()
+            messages.success(request,'Your reply has been posted successfully!')
+    return redirect(f'/blog-post/{blog.slug}')
+
 
 def sign_in(request):
     if request.method=="POST":
@@ -79,10 +109,19 @@ def sign_up(request):
         print(user)
         user.save()
         messages.success(request,'Account Created for ' + ' ' + name.title())
-        return redirect('/')
+        profile_obj=Profile.objects.create_user(token=str(uuid.uuid4()))
+        profile_obj.save(commit=False)
+        user=User.objects.get(email=email)
+        profile_obj.save(user=user)
+        profile_obj.save()
+        return redirect('/token-send')
     
     
         
     return render(request,'authentication/sign_up.html')
 
 
+def success(request):
+    return render(request,'authentication/success.html')
+def token_send(request):
+    return render(request,'authentication/token_send.html')

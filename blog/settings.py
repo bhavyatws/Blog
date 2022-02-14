@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # ... include the providers you want to enable:
     
     'allauth.socialaccount.providers.facebook',
+    'django.contrib.humanize',
     
 ]
 
@@ -166,3 +167,12 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 AUTH_USER_MODEL='home.User'
+
+# email='externaluser.tws@gmail.com'
+# password='exterTWSnal%%$$23'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'externaluser.tws@gmail.com'
+EMAIL_HOST_PASSWORD = 'exterTWSnal%%$$23'
