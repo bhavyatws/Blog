@@ -23,9 +23,11 @@
 {% block content %}
 
 <div class="text-center container">
-    
+    {% for message in messages %}
+    {{message}}
+    {% endfor %}
 <main class="form-signin container">
-    <form method="POST" action="{% url 'register' %}">
+    <form method="POST" action="{% url 'register' %}" novalidate>
         {% csrf_token %}
       {% comment %} <img class="mb-4" src="/docs/5.1/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> {% endcomment %}
       <h1 class="h3 mb-3 fw-normal">Register</h1>

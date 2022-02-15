@@ -2,5 +2,9 @@
 {% block titile %}Success{% endblock titile %}
 {% block content %}
 Successs
+{% if messages %}
+{% for message in messages %}
+{{message}}
+{% endfor %}{% endif %}
 <a href="{% url 'signin' %}">Login</a>
 {% endblock content %}
