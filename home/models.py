@@ -2,7 +2,6 @@ from email.policy import default
 import imp
 from operator import mod
 from tabnanny import verbose
-from tkinter import CASCADE
 from django.db import models
 from django.db import models
 from datetime import datetime
