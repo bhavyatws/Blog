@@ -1,5 +1,4 @@
 from email.policy import default
-import imp
 from operator import mod
 from tabnanny import verbose
 from django.db import models
