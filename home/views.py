@@ -159,7 +159,7 @@ def success(request):
 def token_send(request):
     return render(request,'authentication/token_send.html')
 def verify_account(request,auth_token):
-    profile_obj=Profile.objects.filter(auth_token=auth_token).first()
+    profile_obj=Profile.objects.filter(auth_token=auth_token)
     if profile_obj:
         if profile_obj.is_verified==True:
             messages.success(request,"Account already has been verified")
