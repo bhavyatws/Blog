@@ -14,6 +14,7 @@ from .templatetags import extra_filter
 from .models import *
 import uuid
 from .helper import send_mail_registration
+from django.db.models import Q
 # Create your views here.
 def home(request):
     blog=Blog.objects.all()
@@ -173,29 +174,29 @@ def verify_account(request,auth_token):
     else:
         return HttpResponse('Token doesnot exist')
 def addpost(request):
+    id=Blog.objects.latest('post_id')
+    print(id)
     if request.method == "POST":
         title=request.POST.get('title')
         description=request.POST.get('description')
-        slug=request.POST.get('slug')
         author=request.POST.get('user')
-        date_created=request.POST.get('date_created')
         user=User.objects.get(email=author)
-        blog=Blog(title=title,description=description,slug=slug,date_created=date_created,author=user)
+        slug=title + '-' +author
+        blog=Blog(title=title,description=description,author=user,slug=slug)
         blog.save()
         return redirect('/')
     return render(request,'addpost.html')
 def updatepost(request,pk):
     queryset=Blog.objects.filter(post_id=pk)
     if queryset.exists():
-        queryset=Blog.objects.get(post_id=pk)
+        queryset=Blog.objects.filter(author=request.user).first()
         if request.method=='POST':
             title=request.POST.get('title')
             description=request.POST.get('description')
-            slug=request.POST.get('slug')
             author=request.POST.get('user')
-            date_created=request.POST.get('date_created')
+            slug=title + '-' +author
             user=User.objects.get(email=author)
-            blog=Blog(post_id=pk,title=title,description=description,slug=slug,date_created=date_created,author=user)
+            blog=Blog(post_id=pk,title=title,description=description,slug=slug,author=user)
             blog.save()
             return redirect('/')
         date_created=queryset.date_created
@@ -208,8 +209,20 @@ def updatepost(request,pk):
 def deletepost(request,pk):
     queryset=Blog.objects.filter(post_id=pk)
     if queryset.exists():
-        queryset=Blog.objects.get(post_id=pk)
-        queryset.delete()
-        return redirect('/')
+        queryset=Blog.objects.filter(author=request.user).first()
+        if request.method=="POST":
+            queryset.delete()
+            return redirect('/')
+        context={'blog':queryset}
+        return render(request,'deletepost.html',context)
     else:
         return redirect('/')
+
+def search(request):
+    query=request.GET.get('query')
+    blog=Blog.objects.filter(Q(title__icontains=query)|Q(description__icontains=query))
+    # print(blog)
+    # hello=Blog.objects.all()
+    # print(hello.thumbnail.url)
+    context={'blog':blog}
+    return render(request,'blog.html',context)

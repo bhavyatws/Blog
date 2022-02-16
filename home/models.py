@@ -66,7 +66,7 @@ class Blog(models.Model):
     title=models.CharField(max_length=100,null=True)
     description=models.TextField(null=True)
     thumbnail=models.ImageField(default="userprofile.png",upload_to='static',null=True)
-    date_created=models.DateField(default=date.today(),blank=True,null=True)
+    date_created=models.DateField(auto_now=True,null=True)
     viewers = models.TextField(default="", null=True, blank=True)
     numViews = models.IntegerField(default=0)
     def __str__(self):

@@ -10,9 +10,9 @@ urlpatterns = [
     path('add-post/',views.addpost,name="addpost"),
     path('delete-post/<int:pk>',views.deletepost,name="delete_post"),
     path('updatepost/<int:pk>',views.updatepost,name="update_post"),
-    
+    path('search/',views.search,name="search"),
     path('post-comment/<str:slug>',views.CommentPost,name="postcomment"),
-    path('signin',views.sign_in,name="signin"),
+    path('signin/',views.sign_in,name="signin"),
 #     path('update-task/<str:pk>/',views.updateTask,name="update"),
 #     path('delete-task/<str:pk>/',views.deleteTask,name="delete_task"),
 #     path('login/',views.sign_in,name="login"),

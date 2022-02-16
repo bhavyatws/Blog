@@ -18,15 +18,15 @@
             <input type="description"  value="{{queryset.description}}" name="description" class="form-control" id="exampleInputPassword1">
         </div>
         <input type="hidden" name="user" value="{{request.user}}">
-        <div class="mb-3">
+        {% comment %} <div class="mb-3">
             <label for="exampleInputPassword1" class="form-label">Slug</label>
             <input type="text" name="slug" value="{{queryset.slug}}" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="mb-3">
+        </div> {% endcomment %}
+        {% comment %} <div class="mb-3">
             <label for="exampleInputPassword1"  class="form-label">Date:-{{queryset.date_created|date:"Y-m-d"}}</label>
             <input type="date" name="date_created" value='{{date_created|date:"Y-m-d" }}' class="form-control" id="exampleInputPassword1">
         </div>
-       
+        {% endcomment %}
 
 
         <button type="submit" class="btn btn-primary">Submit</button>
