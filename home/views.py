@@ -1,7 +1,4 @@
-import email
-from email.mime import message
-import imp
-from turtle import pos
+
 from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth.decorators import login_required
