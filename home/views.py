@@ -171,8 +171,6 @@ def verify_account(request,auth_token):
     else:
         return HttpResponse('Token doesnot exist')
 def addpost(request):
-    id=Blog.objects.latest('post_id')
-    print(id)
     if request.method == "POST":
         title=request.POST.get('title')
         description=request.POST.get('description')
