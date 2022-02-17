@@ -1,4 +1,6 @@
-{% extends 'base.html' %} {% load static %} {% block css %}
+{% extends 'base.html' %} 
+{% block title %}Login{% endblock title %}
+{% load static %} {% block css %}
 <link href="{% static 'css/sign.css' type=" text/css " %}">
 
 <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=x8U2G54Ozgv3p-DpUHQ0gpTk0J3YbFKxe6DgHPPX7xxBzCDuOnFlPqFW4ggxjs0w154DR9KGbyal3zNGFWQFpvwszghTdgd-ByUDW7Oa1NU" charset="UTF-8"></script>
@@ -30,7 +32,7 @@
     
     
     
-      <div class="alert alert-danger  alert-dismissible fade show" role="alert">
+      <div class="alert alert-success  alert-dismissible fade show" role="alert">
         <strong>{{message}}</strong> 
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
