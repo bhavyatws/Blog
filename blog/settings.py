@@ -10,11 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import imp
 from pathlib import Path
 import django_heroku
 import dj_database_url
-# from decouple import config
+
 
 import os
 
@@ -102,16 +101,31 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'blog', 
-        'USER': 'postgres', 
-        'PASSWORD': 'tws',
-        'HOST': '127.0.0.1', 
-        'PORT': '5432',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'blog', 
+#         'USER': 'postgres', 
+#         'PASSWORD': 'tws',
+#         'HOST': '127.0.0.1', 
+#         'PORT': '5432',
+#     }
+# }
+# DATABASES = {
+#      'default': {
+
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': os.environ.get('NAME'), 
+#         'USER': os.getenv('USER'), 
+#         'PASSWORD':os.getenv('PASSWORD') ,
+#         'HOST': os.getenv('HOST'), 
+#         'PORT' : 5432,
+#     }
+# }
+
+DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))}
+# db_from_env=dj_database_url.config(conn_max_age=600)
+# DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -146,7 +160,7 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 MEDIA_URL='/upload/'
 STATICFILES_DIRS=[
@@ -182,12 +196,10 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 AUTH_USER_MODEL='home.User'
 
-# email='externaluser.tws@gmail.com'
-# password='exterTWSnal%%$$23'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'externaluser.tws@gmail.com'
-EMAIL_HOST_PASSWORD = 'exterTWSnal%%$$23'
-django_heroku.settings(locals())
+EMAIL_HOST_USER = os.getenv('email')
+EMAIL_HOST_PASSWORD = os.getenv('password')
+django_heroku.settings(locals())#we should comment this on local while using postgress
