@@ -14,10 +14,10 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import django_heroku
 import dj_database_url
-# import env_mail_cred
-# env_mail_cred.setVar()#=>calling setVar() function
 
 import os
+from dotenv import dotenv_values
+config=dotenv_values('.env')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -125,9 +125,9 @@ WSGI_APPLICATION = 'blog.wsgi.application'
 #     }
 # }
 
-DATABASES = {'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))}
-# db_from_env=dj_database_url.config(conn_max_age=600)
-# DATABASES['default'].update(db_from_env)
+DATABASES = {'default': dj_database_url.config(default=config['DATABASE_URL'])}
+db_from_env=dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -202,7 +202,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-from decouple import config
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD =config('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = config['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = config['EMAIL_HOST_PASSWORD']
 django_heroku.settings(locals())#we should comment this on local while using postgress
