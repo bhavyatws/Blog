@@ -204,4 +204,4 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = config['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = config['EMAIL_HOST_PASSWORD']
-django_heroku.settings(locals())#we should comment this on local while using postgress
+# django_heroku.settings(locals())#we should comment this on local while using postgress
