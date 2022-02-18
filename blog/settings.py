@@ -10,12 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import imp
+
 from pathlib import Path
 import django_heroku
 import dj_database_url
-import env_mail_cred
-env_mail_cred.setVar()#=>calling setVar() function
+# import env_mail_cred
+# env_mail_cred.setVar()#=>calling setVar() function
 
 import os
 
